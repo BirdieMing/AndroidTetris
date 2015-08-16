@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class Piece {
 
-    Boolean[][] piece;
+    public Boolean[][] piece;
     int positionX;
     int positionY;
     PieceType type;
