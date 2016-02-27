@@ -1,0 +1,36 @@
+Applications Memory Usage (kB):
+Uptime: 3089843 Realtime: 6892006
+
+** MEMINFO in pid 12945 [com.mygdx.game.android] **
+                   Pss  Private  Private  Swapped     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap     2999     2952        0        0    12288     5640     6647
+  Dalvik Heap     1648     1216        0        0    22949    17316     5633
+ Dalvik Other      464      464        0        0                           
+        Stack      132      132        0        0                           
+      Gfx dev      148      148        0        0                           
+    Other dev        5        0        4        0                           
+     .so mmap      950      304      280        0                           
+    .apk mmap       79        0        8        0                           
+    .dex mmap     1544        0     1540        0                           
+    .oat mmap      784        0      260        0                           
+    .art mmap     2062     1824       52        0                           
+   Other mmap        4        4        0        0                           
+   EGL mtrack    30304    30304        0        0                           
+    GL mtrack     2900     2900        0        0                           
+      Unknown      140      140        0        0                           
+        TOTAL    44163    40388     2144        0    35237    22956    12280
+ 
+ Objects
+               Views:        5         ViewRootImpl:        1
+         AppContexts:        3           Activities:        1
+              Assets:        2        AssetManagers:        2
+       Local Binders:        9        Proxy Binders:       14
+       Parcel memory:        8         Parcel count:       15
+    Death Recipients:        0      OpenSSL Sockets:        0
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+ 
