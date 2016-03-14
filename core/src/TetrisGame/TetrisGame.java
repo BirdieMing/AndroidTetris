@@ -1,7 +1,6 @@
 package TetrisGame;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 /**
@@ -15,7 +14,7 @@ public class TetrisGame extends Game {
     @Override
     public void create() {
         imageProvider = new ImageProvider();
-        gotoStartScreen();
+        gotoGameScreen();
     }
 
     public ImageProvider getImageProvider() {
@@ -23,14 +22,14 @@ public class TetrisGame extends Game {
     }
 
     public void gotoStartScreen() {
-        setScreen(new StartScreen(this));
+        //setScreen(new StartScreen(this));
     }
 
     public void gotoGameScreen() {
         setScreen(new GameScreen(this));
     }
 
-    public static int getHighScore() {
+/*    public static int getHighScore() {
         Preferences prefs = Gdx.app.getPreferences("highScore");
 
         if (!prefs.contains("highScore"))
@@ -44,5 +43,5 @@ public class TetrisGame extends Game {
 
         prefs.putInteger("highScore", value);
         prefs.flush();
-    }
+    }*/
 }

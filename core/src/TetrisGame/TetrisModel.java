@@ -16,6 +16,63 @@ public class TetrisModel {
     public Boolean[][] grid;
     public Color[][] colorMap;
     public int score;
+    public ArrayList<Integer> linesDeleting = new ArrayList<Integer>();
+    public int cleaningStep;
+    public int cleaningMaxSteps = 2;
+
+    private void DeleteLineBlocks()
+    {
+        if (linesDeleting.size() == 0)
+            return;
+
+        Boolean[][] newGrid = new Boolean[width][height];
+        Color[][] newColor = new Color[width][height];
+
+        int copyRow = 0;
+
+        for (int h = 0; h < height; h++) {
+            while (linesDeleting.contains(copyRow)) {
+                if (copyRow >= height-1)
+                    break;
+                copyRow++;
+            }
+
+            for (int w = 0; w < width; w++) {
+                if (copyRow >= height-1) {
+                    newGrid[w][h] = false;
+                    newColor[w][h] = Color.CLEAR;
+                } else {
+                    newGrid[w][h] = grid[w][copyRow];
+                    newColor[w][h] = colorMap[w][copyRow];
+                }
+            }
+
+            copyRow++;
+        }
+
+        colorMap = newColor;
+        grid = newGrid;
+
+        linesDeleting.clear();
+    }
+
+    public Color[][] getColorMap()
+    {
+        //Gdx.app.log("clean", Integer.toString(linesDeleting.size()));
+
+        if (linesDeleting.size() == 0)
+            return colorMap;
+        else {
+
+            Color[][] colorMapDisplay = colorMap;
+
+            for (int l : linesDeleting)
+                for (int p = 0; p < width; p++)
+                    colorMap[p][l] = Color.CLEAR;
+
+            return colorMapDisplay;
+        }
+    }
 
     public TetrisModel() {
         this.width = Constants.gridWidth;
@@ -29,6 +86,7 @@ public class TetrisModel {
         }
     }
 
+
     public Boolean[][] GetGrid() {
         return this.grid;
     }
@@ -37,8 +95,28 @@ public class TetrisModel {
         return this.colorMap;
     }
 
+    private void AnimateClean() {
+
+//        if (cleaningStep < cleaningMaxSteps)
+//        {
+//            cleaningStep++;
+//        }
+//        else
+            Clean();
+    }
+
+    private void Clean()
+    {
+        cleaningStep = 0;
+        DeleteLineBlocks();
+    }
+
     public void Tick() {
-        MovePieceDown();
+        //Fix
+        if (linesDeleting.size() > 0)
+            AnimateClean();
+        else
+            MovePieceDown();
     }
 
     private void InitializeGrid() {
@@ -79,16 +157,25 @@ public class TetrisModel {
     }
 
     public void MovePieceLeft() {
+        if (isCleaning())
+            return;
+
         if (IsPieceAtValidLocation(currentPiece.positionX - 1, currentPiece.positionY, currentPiece.piece, currentPiece.size))
             currentPiece.positionX--;
     }
 
     public void MovePieceRight() {
+        if (isCleaning())
+            return;
+
         if (IsPieceAtValidLocation(currentPiece.positionX + 1, currentPiece.positionY, currentPiece.piece, currentPiece.size))
             currentPiece.positionX++;
     }
 
     public void MovePieceToBottom() {
+        if (isCleaning())
+            return;
+
         while (MovePieceDown()) {
             //nothing
         }
@@ -120,59 +207,26 @@ public class TetrisModel {
                 }
             }
         }
+
+        DeleteFilledRows();
         CycleNewPiece();
     }
 
     private void DeleteFilledRows() {
-        int[] offsetMap = new int[this.height];
-        int linesDeleted = 0;
-
-        int offset = 0;
         ArrayList<Integer> tempRowsDelete = new ArrayList<Integer>();
         for (int h = 0; h < this.height - 1; h++) {
             int sum = 0;
             for (int x = 0; x < this.width; x++) {
-                if (grid[x][h])
+                if (grid[x][h] != null && grid[x][h].booleanValue())
                     sum++;
             }
             if (sum == this.width) {
                 tempRowsDelete.add(h);
-                linesDeleted++;
-                offset++;
-            } else {
-                if (tempRowsDelete.size() > 0) {
-                    for (int i = 0; i < tempRowsDelete.size(); i++) {
-                        offsetMap[tempRowsDelete.get(i)] = offset;
-                    }
-                    offset++;
-                }
-
-                tempRowsDelete.clear();
-                offsetMap[h] = offset;
             }
         }
 
-        for (int h = 0; h < this.height - 1; h++) {
-            int o = offsetMap[h];
-            int newH = h - o;
-            for (int w = 0; w < this.width; w++) {
-                {
-                    if (newH < 0)
-                        this.grid[w][h] = false;
-                    else
-                        this.grid[w][h] = this.grid[w][newH].booleanValue();
-                }
-            }
-        }
-
-        if (linesDeleted == 1)
-            score = score + 1;
-        else if (linesDeleted == 2)
-            score = score + 2 * 2;
-        else if (linesDeleted == 3)
-            score = score + 3 * 3;
-        else
-            score = score + 4 * 4;
+        if (tempRowsDelete.size() > 0)
+            linesDeleting.addAll(tempRowsDelete);
     }
 
     private void CycleNewPiece() {
@@ -181,7 +235,7 @@ public class TetrisModel {
 
         this.currentPiece = (Piece) pieces.poll();
         this.currentPiece.positionX = (width - this.currentPiece.size) / 2;
-        this.currentPiece.positionY = 18;
+        this.currentPiece.positionY = 16;
 
         if (!IsPieceAtValidLocation(currentPiece.positionX, currentPiece.positionY, currentPiece.piece, currentPiece.size)) {
             reset();
@@ -190,19 +244,26 @@ public class TetrisModel {
     }
 
     public void RotatePiece() {
+        if (isCleaning())
+            return;
+
         if (IsPieceAtValidLocation(currentPiece.positionX, currentPiece.positionY, this.currentPiece.GetAfterRotateRight(), this.currentPiece.size))
             this.currentPiece.Rotate();
     }
 
     public void reset() {
-        if (score > TetrisGame.getHighScore())
-            TetrisGame.setHighScore(score);
-
-
-        pieces = new LinkedList<Piece>();
         InitializeGrid();
-        score = 0;
+        linesDeleting.add(1);
+        linesDeleting.add(2);
+        linesDeleting.add(3);
+        DeleteLineBlocks();
+        pieces = new LinkedList<Piece>();
         CycleNewPiece();
+    }
+
+    private boolean isCleaning()
+    {
+        return linesDeleting.size() > 0;
     }
 
 }

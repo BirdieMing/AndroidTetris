@@ -59,6 +59,10 @@ public class TextButton {
 
     public Boolean IsPressed(int x, int y) {
         y = Gdx.graphics.getHeight() - y;
+
+        if (this.startX < x && this.endX > x && this.startY < y && this.endY > y)
+            return true;
+
         return false;
     }
 

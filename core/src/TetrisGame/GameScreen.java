@@ -4,6 +4,8 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,7 +15,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
+
 import java.util.ArrayList;
+
+//import javafx.scene.media.Media;
+//import javafx.scene.media.MediaPlayer;
 
 public class GameScreen implements Screen, InputProcessor, GestureDetector.GestureListener {
 
@@ -30,6 +36,8 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     private TextButton scoreBtn;
     private TextButton pauseBtn;
     private TextButton exitBtn;
+    //private MediaPlayer player;
+    private Music mp3Sound;
 
     public GameScreen(TetrisGame game) {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
@@ -51,11 +59,16 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         scoreBtn = new TextButton("ScoreButton", "Score: ", 80, 200, 1700);
         textButtons.add(scoreBtn);
 
-        pauseBtn = new TextButton("PauseButton", "Pause", 80, 500, 1700);
-        textButtons.add(pauseBtn);
+        //pauseBtn = new TextButton("PauseButton", "Pause", 80, 500, 1700);
+        //textButtons.add(pauseBtn);
 
         exitBtn = new TextButton("ExitButton", "Exit", 80, 800, 1700);
         textButtons.add(exitBtn);
+
+        mp3Sound = Gdx.audio.newMusic(Gdx.files.internal("data/tetris.mp3"));
+        mp3Sound.play();
+        //Media pick = new Media(Gdx.files.internal("data/Kalimba.mp3").path());
+        //player = new MediaPlayer(pick);
     }
 
     @Override
@@ -71,6 +84,9 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     private void UpdateModel() {
         long now = com.badlogic.gdx.utils.TimeUtils.millis();
 
+        //Model store deleted rows
+        //Seconds passing counted
+        //After 5 move on
         if (nextTickTime != 0 && nextTickTime <= now) {
             if (!isUpdating) {
                 isUpdating = true;
@@ -90,7 +106,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         drawer.DrawBackground();
-        drawer.DrawGameGrid(model.grid, model.colorMap);
+        drawer.DrawGameGrid(model.grid, model.getColorMap());
         drawer.DrawPiece(model.currentPiece);
 
         batch.begin();
@@ -170,8 +186,10 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        //this.model.RotatePiece();
+        if (exitBtn.IsPressed(Math.round(x), Math.round(y)))
+            Gdx.app.exit();
 
+        this.model.RotatePiece();
         int yPos = Gdx.graphics.getHeight() - Math.round(y);
         int xPos = Math.round(x);
         Gdx.app.debug("tap", xPos + " " + yPos);
@@ -220,6 +238,4 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
         return false;
     }
-
-
 }

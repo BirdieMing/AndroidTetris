@@ -74,10 +74,10 @@ public class ImageProvider {
     }
 
     public TextureRegion getBackground() {
-        return new TextureRegion(new Texture(Gdx.files.internal("data/Background.jpg")));
+        return new TextureRegion(new Texture(Gdx.files.internal("data/background.jpg")));
     }
 
     public Sprite getBackgroundSprite() {
-        return new Sprite(new Texture(Gdx.files.internal("data/Background.jpg")));
+        return new Sprite(new Texture(Gdx.files.internal("data/background.jpg")));
     }
 }

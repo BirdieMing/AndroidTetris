@@ -2,7 +2,6 @@ package TetrisGame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.mygdx.game.PieceType;
 
 import java.util.Random;
 
@@ -24,6 +23,7 @@ public class Piece {
 
     public Piece(int randomRank, int orientation) {
         this.orientation = orientation;
+        //randomRank = 1;
         state = true;
         size = 4;
         alpha = 0.8f;
