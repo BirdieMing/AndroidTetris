@@ -59,8 +59,8 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         scoreBtn = new TextButton("ScoreButton", "Score: ", 80, 200, 1700);
         textButtons.add(scoreBtn);
 
-        //pauseBtn = new TextButton("PauseButton", "Pause", 80, 500, 1700);
-        //textButtons.add(pauseBtn);
+        pauseBtn = new TextButton("PauseButton", "Auto", 80, 500, 1700);
+        textButtons.add(pauseBtn);
 
         exitBtn = new TextButton("ExitButton", "Exit", 80, 800, 1700);
         textButtons.add(exitBtn);
@@ -69,6 +69,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         mp3Sound.play();
         //Media pick = new Media(Gdx.files.internal("data/Kalimba.mp3").path());
         //player = new MediaPlayer(pick);
+        this.model.isAuto = true;
     }
 
     @Override
@@ -189,6 +190,17 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         if (exitBtn.IsPressed(Math.round(x), Math.round(y)))
             Gdx.app.exit();
 
+        if (pauseBtn.IsPressed(Math.round(x), Math.round(y))) {
+            if (this.model.isAuto)
+                this.model.isAuto = false;
+            else
+                this.model.isAuto = true;
+        }
+
+        if (this.model.isAuto)
+            return true;
+
+
         this.model.RotatePiece();
         int yPos = Gdx.graphics.getHeight() - Math.round(y);
         int xPos = Math.round(x);
@@ -203,6 +215,10 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
+
+        if (this.model.isAuto)
+            return true;
+
         Gdx.app.debug("fling", velocityX + " " + velocityY);
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
             if (velocityX > 10)
