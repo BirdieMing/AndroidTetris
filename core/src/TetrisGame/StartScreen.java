@@ -28,8 +28,8 @@ public class StartScreen implements Screen, InputProcessor, GestureDetector.Gest
         //highScore = new TextButton("highScore", "Tetris", 400, width / 2, 1500);
         byTxt = new TextButton("byTxt", "by Ming Luo 2015", width / 2, 0, 1200);
         newGameTxt = new TextButton("newGameTxt", "New Game", 400, width / 2, 500);
-        int highScore = game.getHighScore();
-        highScoreTxt = new TextButton("highScoreTxt", "High Score: " + highScore, 400, width / 2, 800);
+        //int highScore = game.getHighScore();
+        //highScoreTxt = new TextButton("highScoreTxt", "High Score: " + highScore, 400, width / 2, 800);
 
         this.game = game;
     }

@@ -40,7 +40,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureDetector.Ges
     int gridStartH;
     int gridStartW;
     SpriteBatch fontBatch;
-    BotPlayer bot;
+    //BotPlayer bot;
 
     TextureRegion background;
     int speed = 100;
@@ -91,7 +91,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureDetector.Ges
         rotation= 0;
 
         fontBatch = new SpriteBatch();
-        bot = new BotPlayer(this, model);
+        //bot = new BotPlayer(this, model);
 
 
     }
@@ -105,7 +105,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureDetector.Ges
             if (!isUpdating) {
                 isUpdating = true;
                 //this.model.Tick();
-                this.bot.MakeNextMove();
+                //this.bot.MakeNextMove();
                 nextTickTime = now + (intervalInSeconds * 1000);
                 isUpdating = false;
             }
