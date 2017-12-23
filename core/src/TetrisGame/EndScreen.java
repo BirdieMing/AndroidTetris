@@ -12,11 +12,11 @@ public class EndScreen implements Screen, InputProcessor, GestureDetector.Gestur
 
     private Drawer drawer;
 
-    TextButton highScore;
-    TextButton newGame;
-    TextButton newGameBtn;
+    MyTextButton highScore;
+    MyTextButton newGame;
+    MyTextButton newGameBtn;
     SpriteBatch batch;
-    TextButton highScoreBtn;
+    MyTextButton highScoreBtn;
     TetrisGame game;
 
     public EndScreen(TetrisGame game, Boolean isHighScore) {
@@ -25,11 +25,11 @@ public class EndScreen implements Screen, InputProcessor, GestureDetector.Gestur
         int height = Gdx.graphics.getHeight();
 
         if (isHighScore)
-            highScore = new TextButton("scoreText", "New High Score: ", 400, width / 2, 1500);
+            highScore = new MyTextButton("scoreText", "New High Score: ", 400, width / 2, 1500);
         else
-            highScore = new TextButton("scoreText", "Your Score: ", 400, width / 2, 1500);
+            highScore = new MyTextButton("scoreText", "Your Score: ", 400, width / 2, 1500);
 
-        newGame = new TextButton("newGame", "New Game", width / 2, 0, 1200);
+        newGame = new MyTextButton("newGame", "New Game", width / 2, 0, 1200);
     }
 
     @Override

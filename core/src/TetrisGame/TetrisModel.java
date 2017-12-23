@@ -21,11 +21,21 @@ public class TetrisModel {
     public int cleaningMaxSteps = 2;
     //public boolean isAuto;
     //public BotPlayer bot;
+    public boolean isGameOver;
+
+    public TetrisModel() {
+        this.width = Constants.gridWidth;
+        this.height = Constants.gridHeight;
+        reset();
+        isGameOver = false;
+    }
 
     private void DeleteLineBlocks()
     {
         if (linesDeleting.size() == 0)
             return;
+
+        score = score + linesDeleting.size();
 
         Boolean[][] newGrid = new Boolean[width][height];
         Color[][] newColor = new Color[width][height];
@@ -58,8 +68,7 @@ public class TetrisModel {
         linesDeleting.clear();
     }
 
-    public Color[][] getColorMap()
-    {
+    public Color[][] getColorMap() {
         //Gdx.app.log("clean", Integer.toString(linesDeleting.size()));
 
         if (linesDeleting.size() == 0)
@@ -74,16 +83,6 @@ public class TetrisModel {
 
             return colorMapDisplay;
         }
-    }
-
-    public TetrisModel() {
-        this.width = Constants.gridWidth;
-        this.height = Constants.gridHeight;
-        //this.isAuto = false;
-        reset();
-
-        //bot = new BotPlayer(this);
-
     }
 
     private void FillQueue() {
@@ -118,6 +117,9 @@ public class TetrisModel {
     }
 
     public void Tick() {
+
+        if (this.isGameOver)
+            return;
 
         if (linesDeleting.size() > 0)
             AnimateClean();
@@ -246,13 +248,14 @@ public class TetrisModel {
         this.currentPiece.positionY = 16;
 
         if (!IsPieceAtValidLocation(currentPiece.positionX, currentPiece.positionY, currentPiece.piece, currentPiece.size)) {
-            reset();
+            //reset();
+            isGameOver = true;
         }
         //Game Over
     }
 
     public void RotatePiece() {
-        if (isCleaning())
+        if (isCleaning() || isGameOver)
             return;
 
         if (IsPieceAtValidLocation(currentPiece.positionX, currentPiece.positionY, this.currentPiece.GetAfterRotateRight(), this.currentPiece.size))
@@ -264,6 +267,8 @@ public class TetrisModel {
         DeleteLineBlocks();
         pieces = new LinkedList<Piece>();
         CycleNewPiece();
+        score = 0;
+        isGameOver = false;
     }
 
     private boolean isCleaning()

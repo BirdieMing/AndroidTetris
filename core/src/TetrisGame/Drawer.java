@@ -62,6 +62,20 @@ public class Drawer {
         sr.end();
     }
 
+    public void DrawPauseScreen()
+    {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        //sr.setColor(Color.GRAY);
+        sr.setColor(0, 0, 0, 0.8f);
+        sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        sr.end();
+
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+    }
+
+
     public void DrawGameGrid(Boolean[][] currentGrid, Color[][] colorMap) {
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

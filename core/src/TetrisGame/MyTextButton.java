@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 /**
  * Created by panda on 8/10/2015.
  */
-public class TextButton {
+public class MyTextButton {
     private String name;
     private String text;
     BitmapFont font;
@@ -18,7 +18,7 @@ public class TextButton {
     private int endX;
     private int endY;
 
-    public TextButton(String name, String text, int size, int x, int y) {
+    public MyTextButton(String name, String text, int size, int x, int y) {
         this.name = name;
         this.text = text;
 
