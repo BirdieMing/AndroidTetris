@@ -19,8 +19,8 @@ public class TetrisModel {
     public ArrayList<Integer> linesDeleting = new ArrayList<Integer>();
     public int cleaningStep;
     public int cleaningMaxSteps = 2;
-    public boolean isAuto;
-    public BotPlayer bot;
+    //public boolean isAuto;
+    //public BotPlayer bot;
 
     private void DeleteLineBlocks()
     {
@@ -79,10 +79,10 @@ public class TetrisModel {
     public TetrisModel() {
         this.width = Constants.gridWidth;
         this.height = Constants.gridHeight;
-        this.isAuto = false;
+        //this.isAuto = false;
         reset();
 
-        bot = new BotPlayer(this);
+        //bot = new BotPlayer(this);
 
     }
 
@@ -123,12 +123,7 @@ public class TetrisModel {
             AnimateClean();
         else
         {
-            if (this.isAuto)
-            {
-                bot.MakeNextMove();
-            }
-            else
-                MovePieceDown();
+            MovePieceDown();
         }
     }
 

@@ -14,7 +14,8 @@ public class TetrisGame extends Game {
     @Override
     public void create() {
         imageProvider = new ImageProvider();
-        gotoGameScreen();
+        gotoStartScreen();
+        //gotoGameScreen();
     }
 
     public ImageProvider getImageProvider() {
@@ -22,7 +23,7 @@ public class TetrisGame extends Game {
     }
 
     public void gotoStartScreen() {
-        //setScreen(new StartScreen(this));
+        setScreen(new StartScreen(this));
     }
 
     public void gotoGameScreen() {

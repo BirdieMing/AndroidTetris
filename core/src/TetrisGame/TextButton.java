@@ -22,7 +22,7 @@ public class TextButton {
         this.name = name;
         this.text = text;
 
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/Font.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/ARCADE.TTF"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = size;
         font = generator.generateFont(parameter); // font size 12 pixels
@@ -50,7 +50,12 @@ public class TextButton {
     public void Draw(SpriteBatch batch) {
         font.setColor(Color.BLACK);
         font.draw(batch, text, startX, startY);
+    }
 
+    public void Draw(SpriteBatch batch, int wrappedWidth)
+    {
+        font.setColor(Color.BLACK);
+        font.drawWrapped(batch, text, startX, startY, wrappedWidth);
     }
 
     public void SetColor(Color c) {

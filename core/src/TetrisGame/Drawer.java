@@ -35,10 +35,10 @@ public class Drawer {
 
     public Drawer() {
         imageProvider = new ImageProvider();
-        background = new Image(imageProvider.getBackground());
-        background.setFillParent(true);
+        //background = new Image(imageProvider.getBackground());
+        //gitbackground.setFillParent(true);
         stage = new Stage();
-        stage.addActor(background);
+        //stage.addActor(background);
         sr = new ShapeRenderer();
 
         gridStartH = 50;
