@@ -40,8 +40,10 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     private boolean isUpdating;
     private int intervalInSeconds;
     private ArrayList<MyTextButton> textButtons;
-    private MyTextButton scoreBtn;
-    private MyTextButton pauseBtn;
+    private MyTextButton textScore;
+    private MyTextButton textNextPiece;
+    int screenWidth = Gdx.graphics.getWidth();
+    int screenHeight = Gdx.graphics.getHeight();
 
     //private MediaPlayer player;
     private Music mp3Sound;
@@ -50,15 +52,14 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     Stage stage;
     Table table;
     int exitButtonFont = 150;
-    int exitButtonX = Gdx.graphics.getWidth() - 300;
-    int exitButtonY = Gdx.graphics.getHeight() - 220;
-    int scoreButtonX = 200;
-    int scoreButtonY = Gdx.graphics.getHeight() - 220;
-    int screenWidth = Gdx.graphics.getWidth();
-    int screenHeight = Gdx.graphics.getHeight();
+    int buttonExitX = Gdx.graphics.getWidth() - 300;
+    int buttonExitY = Gdx.graphics.getHeight() - 220;
+    int buttonScoreX = 50;
+    int buttonScoreY = this.screenHeight - 50;
+    int textNextPieceX = 300;
+    int textNextPieceY = this.screenHeight - 50;
 
     ShapeRenderer sr;
-    OrthographicCamera camera;
     TextButton buttonNewGame;
 
     public GameScreen(TetrisGame game) {
@@ -66,14 +67,11 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         sr = new ShapeRenderer();
         batch = new SpriteBatch();
         this.game = game;
-        this.imageProvider = game.getImageProvider();
-        //this.region = imageProvider.getBackground();
+        //this.imageProvider = game.getImageProvider();
         this.model = new TetrisModel();
         drawer = new Drawer();
         GestureDetector gd = new GestureDetector(this);
         //Gdx.input.setInputProcessor(gd);
-
-
 
         intervalInSeconds = 1;
         nextTickTime = com.badlogic.gdx.utils.TimeUtils.millis() + 7000;
@@ -81,8 +79,11 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
 
         textButtons = new ArrayList<MyTextButton>();
 
-        scoreBtn = new MyTextButton("ScoreButton", "Score: ", 80, scoreButtonX, scoreButtonY);
-        textButtons.add(scoreBtn);
+        textScore = new MyTextButton("ScoreButton", "Score" + "\n" + "0", 80, buttonScoreX, buttonScoreY);
+        textButtons.add(textScore);
+
+        textNextPiece = new MyTextButton("TextNextPiece", "Next Piece", 80, textNextPieceX, textNextPieceY);
+        textButtons.add(textNextPiece);
 
         mp3Sound = Gdx.audio.newMusic(Gdx.files.internal("data/tetris.mp3"));
         mp3Sound.setLooping(true);
@@ -114,7 +115,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         textButtonStyle.font = playButtonFont;
 
         buttonExit = new TextButton("Exit", textButtonStyle);
-        buttonExit.setPosition(exitButtonX, exitButtonY);;
+        buttonExit.setPosition(buttonExitX, buttonExitY);;
         buttonExit.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
@@ -128,14 +129,11 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         buttonNewGame.pad(30, 20, 0, 10);
         buttonNewGame.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                model.reset();
+                if (model.isGameOver)
+                    model.reset();
             };
         });
         table.add(buttonNewGame);
-
-
-
-        camera = new OrthographicCamera(1280, 720);
     }
 
     @Override
@@ -164,7 +162,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
                 nextTickTime = now + (intervalInSeconds * 1000);
                 isUpdating = false;
 
-                scoreBtn.SetText("Score: " + String.valueOf(this.model.score));
+                textScore.SetText("Score" + "\n" + String.valueOf(this.model.score));
             }
         }
     }
@@ -180,6 +178,8 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         drawer.DrawBackground();
         drawer.DrawGameGrid(model.grid, model.getColorMap());
         drawer.DrawPiece(model.currentPiece);
+        if (model.NextPiece() != null)
+            drawer.DrawNextPiece(model.NextPiece());
 
         batch.begin();
 
@@ -286,17 +286,38 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
 
         Gdx.app.debug("fling", velocityX + " " + velocityY);
         if (Math.abs(velocityX) > Math.abs(velocityY)) {
-            if (velocityX > 10)
-                this.model.MovePieceRight();
-            else
-                this.model.MovePieceLeft();
+            if (Math.abs(velocityX) > 100)
+            {
+                if (velocityX > 1500) {
+                    this.model.MovePieceRight();
+                    this.model.MovePieceRight();
+                } else if (velocityX > 100)
+                {
+                    this.model.MovePieceRight();
+                } else if (velocityX < 1500) {
+                    this.model.MovePieceLeft();
+                    this.model.MovePieceLeft();
+                } else if (velocityX < 100)
+                    this.model.MovePieceLeft();
+            }
+
         } else {
-            if (velocityY > 200) {
+            if (velocityY > 3000) {
                 this.model.MovePieceToBottom();
-            } else if (velocityY > 10) {
+            } else if (velocityY > 2000) {
+                this.model.MovePieceDown();
+                this.model.MovePieceDown();
+                this.model.MovePieceDown();
+            } else if (velocityY > 1000)
+            {
+                this.model.MovePieceDown();
+                this.model.MovePieceDown();
+            } else if (velocityY > 100)
+            {
                 this.model.MovePieceDown();
             }
         }
+        Gdx.app.log("velocity", String.valueOf(velocityX) + " " + String.valueOf(velocityY));
         return true;
     }
 

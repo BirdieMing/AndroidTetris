@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class Drawer {
 
     private Stage stage;
-    private ImageProvider imageProvider;
     private Image background;
     private ShapeRenderer sr;
     public int gridStartH;
@@ -34,9 +33,6 @@ public class Drawer {
     BitmapFont font;
 
     public Drawer() {
-        imageProvider = new ImageProvider();
-        //background = new Image(imageProvider.getBackground());
-        //gitbackground.setFillParent(true);
         stage = new Stage();
         //stage.addActor(background);
         sr = new ShapeRenderer();
@@ -114,12 +110,23 @@ public class Drawer {
         Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
-    public void DrawText(String text, int x, int y) {
-        batch.begin();
-        //font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        font.setColor(Color.BLACK);
-        font.draw(batch, text, x, y);
-        batch.end();
+    public void DrawNextPiece(Piece nextPiece)
+    {
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        int wOffSet = Gdx.graphics.getWidth() / 2 - 150;
+        int hOffSet = Gdx.graphics.getHeight() - 300;
+
+        for (int w = 0; w < nextPiece.size; w++) {
+            for (int h = 0; h < nextPiece.size; h++) {
+                if (nextPiece.piece[w][h]) {
+                    int wStart = (w) * blockUnit + wOffSet;
+                    int hStart = (h) * blockUnit + hOffSet;
+                    sr.setColor(nextPiece.color);
+                    sr.rect(wStart, hStart, blockUnit - 2, blockUnit - 2);
+                }
+            }
+        }
+        sr.end();
     }
 
     public void DrawPiece(Piece piece) {

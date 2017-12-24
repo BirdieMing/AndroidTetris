@@ -19,9 +19,8 @@ public class TetrisModel {
     public ArrayList<Integer> linesDeleting = new ArrayList<Integer>();
     public int cleaningStep;
     public int cleaningMaxSteps = 2;
-    //public boolean isAuto;
-    //public BotPlayer bot;
     public boolean isGameOver;
+    public Piece nextPiece;
 
     public TetrisModel() {
         this.width = Constants.gridWidth;
@@ -29,7 +28,10 @@ public class TetrisModel {
         reset();
         isGameOver = false;
     }
-
+    public Piece NextPiece()
+    {
+        return nextPiece;
+    }
     private void DeleteLineBlocks()
     {
         if (linesDeleting.size() == 0)
@@ -240,12 +242,13 @@ public class TetrisModel {
     }
 
     private void CycleNewPiece() {
-        if ((Piece) pieces.poll() == null || pieces.size() < 10)
+        if ((Piece) pieces.peek() == null || pieces.size() < 10)
             FillQueue();
 
         this.currentPiece = (Piece) pieces.poll();
         this.currentPiece.positionX = (width - this.currentPiece.size) / 2;
         this.currentPiece.positionY = 16;
+        this.nextPiece = (Piece) pieces.peek();
 
         if (!IsPieceAtValidLocation(currentPiece.positionX, currentPiece.positionY, currentPiece.piece, currentPiece.size)) {
             //reset();

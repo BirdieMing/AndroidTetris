@@ -49,7 +49,7 @@ public class MyTextButton {
 
     public void Draw(SpriteBatch batch) {
         font.setColor(Color.BLACK);
-        font.draw(batch, text, startX, startY);
+        font.drawMultiLine(batch, text, startX, startY);
     }
 
     public void Draw(SpriteBatch batch, int wrappedWidth)
