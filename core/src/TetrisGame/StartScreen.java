@@ -102,10 +102,6 @@ public class StartScreen implements Screen, InputProcessor, GestureDetector.Gest
                 + "3. Tap to rotate piece." + newline
                 + "4. Score points by filling rows completely with blocks.", 80, textIndent, 1100));
 
-        //texts.add(new TextButton("instruct1", , 100, textIndent, 800));
-        //texts.add(new TextButton("instruct1", "3. Tap to rotate piece.", 100, textIndent, 400));
-        //texts.add(new TextButton("instruct1", "4. Score points by filling rows completely with blocks.", 100, textIndent, 1100));
-        //texts.add(txtInstruction1);
         //int highScore = game.getHighScore();
         //highScoreTxt = new TextButton("highScoreTxt", "High Score: " + highScore, 400, width / 2, 800);
     }
@@ -128,7 +124,8 @@ public class StartScreen implements Screen, InputProcessor, GestureDetector.Gest
         drawer.DrawBackground();
         batch.begin();
 
-        titleFont.setColor(Color.RED);
+        //Draw title
+        titleFont.setColor(Color.BLUE);
         titleFont.draw(batch, "T", titleIndent, titleHeight);
         titleFont.setColor(Color.ORANGE);
         titleFont.draw(batch, "E", titleIndent + titleFont.getBounds("T").width, titleHeight);
@@ -136,7 +133,7 @@ public class StartScreen implements Screen, InputProcessor, GestureDetector.Gest
         titleFont.draw(batch, "T", titleIndent + titleFont.getBounds("TE").width, titleHeight);
         titleFont.setColor(Color.GREEN);
         titleFont.draw(batch, "R", titleIndent + titleFont.getBounds("TET").width, titleHeight);
-        titleFont.setColor(Color.BLUE);
+        titleFont.setColor(Color.RED);
         titleFont.draw(batch, "I", titleIndent + titleFont.getBounds("TETR").width, titleHeight);
         titleFont.setColor(Color.PURPLE);
         titleFont.draw(batch, "S", titleIndent + titleFont.getBounds("TETRI").width, titleHeight);

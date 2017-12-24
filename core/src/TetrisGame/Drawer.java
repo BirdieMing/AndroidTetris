@@ -26,11 +26,21 @@ public class Drawer {
 
     private int screenWidth = Gdx.graphics.getWidth();
     private int screenHeight = Gdx.graphics.getHeight();
-    private int gridWidth = 7 * screenWidth / 10;
+    private int gridWidth = 6 * screenWidth / 10;
     private int blockUnit = gridWidth / wBlocks;
     private int gridHeight = blockUnit * hBlocks;
     private SpriteBatch batch;
     BitmapFont font;
+
+    private int scoreBoxStartX = 30;
+    private int scoreBoxStartY = this.screenHeight - 350;
+    private int scoreBoxWidth = 220;
+    private int scoreBoxHeight = 340;
+
+    private int nextPieceBoxStartX = 270;
+    private int nextPieceBoxStartY = this.screenHeight - 350;
+    private int nextPieceBoxWidth = 450;
+    private int nextPieceBoxHeight = 340;
 
     public Drawer() {
         stage = new Stage();
@@ -47,14 +57,23 @@ public class Drawer {
         font = generator.generateFont(parameter); // font size 12 pixels
 
         generator.dispose();
+
+        Gdx.gl.glLineWidth(8);
     }
 
     public void DrawBackground() {
-
         sr.begin(ShapeRenderer.ShapeType.Filled);
-
         sr.rect(0, 0, screenWidth, screenHeight, Color.BLACK, Color.BLACK, Color.WHITE, Color.WHITE);
-        //stage.draw();
+        sr.end();
+    }
+
+    public void DrawBoxes()
+    {
+        sr.begin(ShapeRenderer.ShapeType.Line);
+        sr.setColor(Color.ORANGE);
+        sr.rect(scoreBoxStartX, scoreBoxStartY, scoreBoxWidth, scoreBoxHeight);
+        sr.setColor(Color.BLUE);
+        sr.rect(nextPieceBoxStartX, nextPieceBoxStartY, nextPieceBoxWidth, nextPieceBoxHeight);
         sr.end();
     }
 

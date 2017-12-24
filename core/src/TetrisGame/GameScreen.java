@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -41,6 +40,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     private int intervalInSeconds;
     private ArrayList<MyTextButton> textButtons;
     private MyTextButton textScore;
+    private MyTextButton textScoreNum;
     private MyTextButton textNextPiece;
     int screenWidth = Gdx.graphics.getWidth();
     int screenHeight = Gdx.graphics.getHeight();
@@ -54,11 +54,12 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     int exitButtonFont = 150;
     int buttonExitX = Gdx.graphics.getWidth() - 300;
     int buttonExitY = Gdx.graphics.getHeight() - 220;
-    int buttonScoreX = 50;
-    int buttonScoreY = this.screenHeight - 50;
+    int textScoreX = 40;
+    int textScoreY = this.screenHeight - 50;
     int textNextPieceX = 300;
     int textNextPieceY = this.screenHeight - 50;
-
+    int textScoreNumX = 100;
+    int textScoreNumY = this.screenHeight - 180;
     ShapeRenderer sr;
     TextButton buttonNewGame;
 
@@ -79,8 +80,11 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
 
         textButtons = new ArrayList<MyTextButton>();
 
-        textScore = new MyTextButton("ScoreButton", "Score" + "\n" + "0", 80, buttonScoreX, buttonScoreY);
+        textScore = new MyTextButton("ScoreButton", "Score", 80, textScoreX, textScoreY);
         textButtons.add(textScore);
+
+        textScoreNum = new MyTextButton("ScoreButton", "0", 200, textScoreNumX, textScoreNumY);
+        textButtons.add(textScoreNum);
 
         textNextPiece = new MyTextButton("TextNextPiece", "Next Piece", 80, textNextPieceX, textNextPieceY);
         textButtons.add(textNextPiece);
@@ -162,7 +166,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
                 nextTickTime = now + (intervalInSeconds * 1000);
                 isUpdating = false;
 
-                textScore.SetText("Score" + "\n" + String.valueOf(this.model.score));
+                textScoreNum.SetText(String.valueOf(this.model.score));
             }
         }
     }
@@ -176,6 +180,7 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         drawer.DrawBackground();
+        drawer.DrawBoxes();
         drawer.DrawGameGrid(model.grid, model.getColorMap());
         drawer.DrawPiece(model.currentPiece);
         if (model.NextPiece() != null)
