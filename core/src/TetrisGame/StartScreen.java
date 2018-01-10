@@ -126,17 +126,17 @@ public class StartScreen implements Screen, InputProcessor, GestureDetector.Gest
 
         //Draw title
         titleFont.setColor(Color.BLUE);
-        titleFont.draw(batch, "T", titleIndent, titleHeight);
+        titleFont.draw(batch, "B", titleIndent, titleHeight);
         titleFont.setColor(Color.ORANGE);
-        titleFont.draw(batch, "E", titleIndent + titleFont.getBounds("T").width, titleHeight);
+        titleFont.draw(batch, "L", titleIndent + titleFont.getBounds("B").width, titleHeight);
         titleFont.setColor(Color.YELLOW);
-        titleFont.draw(batch, "T", titleIndent + titleFont.getBounds("TE").width, titleHeight);
+        titleFont.draw(batch, "O", titleIndent + titleFont.getBounds("BL").width, titleHeight);
         titleFont.setColor(Color.GREEN);
-        titleFont.draw(batch, "R", titleIndent + titleFont.getBounds("TET").width, titleHeight);
+        titleFont.draw(batch, "C", titleIndent + titleFont.getBounds("BLO").width, titleHeight);
         titleFont.setColor(Color.RED);
-        titleFont.draw(batch, "I", titleIndent + titleFont.getBounds("TETR").width, titleHeight);
+        titleFont.draw(batch, "K", titleIndent + titleFont.getBounds("BLOC").width, titleHeight);
         titleFont.setColor(Color.PURPLE);
-        titleFont.draw(batch, "S", titleIndent + titleFont.getBounds("TETRI").width, titleHeight);
+        titleFont.draw(batch, "S", titleIndent + titleFont.getBounds("BLOCK").width, titleHeight);
 
         for(MyTextButton b : texts)
         {

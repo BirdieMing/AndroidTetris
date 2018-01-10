@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 public class TetrisModel {
@@ -18,26 +20,44 @@ public class TetrisModel {
     public int score;
     public ArrayList<Integer> linesDeleting = new ArrayList<Integer>();
     public int cleaningStep;
-    public int cleaningMaxSteps = 2;
     public boolean isGameOver;
     public Piece nextPiece;
+    public int level;
+    public Map<Integer, Integer> levelScoreMap;
 
     public TetrisModel() {
+
+        levelScoreMap = new HashMap<Integer, Integer>();
+        levelScoreMap.put(1, 20);
+        levelScoreMap.put(2, 40);
+        levelScoreMap.put(3, 60);
+        levelScoreMap.put(4, 80);
+        levelScoreMap.put(5, 100);
+        levelScoreMap.put(6, 120);
+        levelScoreMap.put(7, 140);
+        levelScoreMap.put(8, 160);
+        levelScoreMap.put(9, 180);
+
         this.width = Constants.gridWidth;
         this.height = Constants.gridHeight;
         reset();
         isGameOver = false;
     }
+
     public Piece NextPiece()
     {
         return nextPiece;
     }
+
     private void DeleteLineBlocks()
     {
         if (linesDeleting.size() == 0)
             return;
 
-        score = score + linesDeleting.size();
+        if (linesDeleting.size() == 4)
+            score = score + 8;
+        else
+            score = score + linesDeleting.size();
 
         Boolean[][] newGrid = new Boolean[width][height];
         Color[][] newColor = new Color[width][height];
@@ -102,19 +122,8 @@ public class TetrisModel {
         return this.colorMap;
     }
 
-    private void AnimateClean() {
-
-//        if (cleaningStep < cleaningMaxSteps)
-//        {
-//            cleaningStep++;
-//        }
-//        else
-            Clean();
-    }
-
     private void Clean()
     {
-        cleaningStep = 0;
         DeleteLineBlocks();
     }
 
@@ -124,11 +133,15 @@ public class TetrisModel {
             return;
 
         if (linesDeleting.size() > 0)
-            AnimateClean();
+            Clean();
         else
         {
             MovePieceDown();
         }
+
+        if (levelScoreMap.containsKey(this.level))
+            if (this.score > levelScoreMap.get(this.level))
+                this.level++;
     }
 
     private void InitializeGrid() {
@@ -270,7 +283,8 @@ public class TetrisModel {
         DeleteLineBlocks();
         pieces = new LinkedList<Piece>();
         CycleNewPiece();
-        score = 0;
+        this.score = 0;
+        this.level = 1;
         isGameOver = false;
     }
 

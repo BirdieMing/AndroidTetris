@@ -37,11 +37,14 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     private Drawer drawer;
     private long nextTickTime;
     private boolean isUpdating;
-    private int intervalInSeconds;
+    private long intervalInSeconds;
     private ArrayList<MyTextButton> textButtons;
     private MyTextButton textScore;
     private MyTextButton textScoreNum;
     private MyTextButton textNextPiece;
+    private MyTextButton textLevel;
+    private MyTextButton textLevelNum;
+
     int screenWidth = Gdx.graphics.getWidth();
     int screenHeight = Gdx.graphics.getHeight();
 
@@ -54,12 +57,17 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
     int exitButtonFont = 150;
     int buttonExitX = Gdx.graphics.getWidth() - 300;
     int buttonExitY = Gdx.graphics.getHeight() - 220;
-    int textScoreX = 40;
-    int textScoreY = this.screenHeight - 50;
     int textNextPieceX = 300;
     int textNextPieceY = this.screenHeight - 50;
+    int textScoreX = 60;
+    int textScoreY = this.screenHeight - 50;
     int textScoreNumX = 100;
-    int textScoreNumY = this.screenHeight - 180;
+    int textScoreNumY = this.screenHeight - 130;
+    int textLevelX = 60;
+    int textLevelY = this.screenHeight - 200;
+    int textLevelNumX = 100;
+    int textLevelNumY = this.screenHeight - 270;
+
     ShapeRenderer sr;
     TextButton buttonNewGame;
 
@@ -80,17 +88,24 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
 
         textButtons = new ArrayList<MyTextButton>();
 
-        textScore = new MyTextButton("ScoreButton", "Score", 80, textScoreX, textScoreY);
+        textScore = new MyTextButton("Score", "Score", 60, textScoreX, textScoreY);
         textButtons.add(textScore);
 
-        textScoreNum = new MyTextButton("ScoreButton", "0", 200, textScoreNumX, textScoreNumY);
+        textScoreNum = new MyTextButton("Score", "0", 100, textScoreNumX, textScoreNumY);
         textButtons.add(textScoreNum);
+
+        textLevel = new MyTextButton("Level", "Level", 60, textLevelX, textLevelY);
+        textButtons.add(textLevel);
+
+        textLevelNum = new MyTextButton("Level", "1", 100, textLevelNumX, textLevelNumY);
+        textButtons.add(textLevelNum);
 
         textNextPiece = new MyTextButton("TextNextPiece", "Next Piece", 80, textNextPieceX, textNextPieceY);
         textButtons.add(textNextPiece);
 
         mp3Sound = Gdx.audio.newMusic(Gdx.files.internal("data/tetris.mp3"));
         mp3Sound.setLooping(true);
+        //mp3Sound.play();
 
         stage = new Stage();
         table = new Table();
@@ -163,10 +178,13 @@ public class GameScreen implements Screen, InputProcessor, GestureDetector.Gestu
             if (!isUpdating) {
                 isUpdating = true;
                 this.model.Tick();
-                nextTickTime = now + (intervalInSeconds * 1000);
+                double intervalInDouble = (double) (1.0 - ((this.model.level - 1) * 0.1));
+                long intervalInLong = (long) (intervalInDouble * 1000);
+                nextTickTime = now + intervalInLong;
                 isUpdating = false;
 
                 textScoreNum.SetText(String.valueOf(this.model.score));
+                textLevelNum.SetText(String.valueOf(this.model.level));
             }
         }
     }
