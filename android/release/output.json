@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 [{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":8},"path":"android-release.apk","properties":{"packageId":"com.game.tetrisclone","split":"","minSdkVersion":"14"}}]
+=======
+[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":5},"path":"android-release.apk","properties":{"packageId":"com.game.tetrisclone","split":"","minSdkVersion":"8"}}]
+>>>>>>> master
